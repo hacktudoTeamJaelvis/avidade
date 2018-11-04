@@ -12,6 +12,7 @@ config :logger, level: :warn
 # Configure your database
 config :avidade, Avidade.Repo,
   adapter: Ecto.Adapters.Postgres,
+  ssl: false,
   username: "postgres",
   password: "postgres",
   database: "avidade_test",

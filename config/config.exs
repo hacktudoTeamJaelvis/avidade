@@ -14,14 +14,19 @@ config :avidade, AvidadeWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "9+aZypvP/zoHpdx/CSYHYOf84AJC0sf3I69s7DsaEwJ9xTls2TnFYeTbiyekQHRk",
   render_errors: [view: AvidadeWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Avidade.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Avidade.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:user_id]
 
+config :avidade, Avidade.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  database: "",
+  ssl: true,
+  pool_size: 1
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"
