@@ -1,10 +1,11 @@
-defmodule Avidade.Shelf do
-  alias Avidade.{Repo, Shelf.Item}
+defmodule Avidade.Shelves do
+  alias Avidade.{Repo, Shelves.Item}
 
-  def update_shelf(shelf_state) do
+  def update_shelf(shelf_id, shelf_state) do
     Repo.transaction(fn ->
-      items = Repo.all(Item)
-      new_items = new_items(items, shelf_state)
+      items = shelf_id |> items_query() |> Repo.all()
+
+      new_items = new_items(items, shelf_id, shelf_state)
       items_to_delete = items_to_delete(items, shelf_state)
       updated_items = updated_items(items, shelf_state, items_to_delete)
 
@@ -14,7 +15,12 @@ defmodule Avidade.Shelf do
     end)
   end
 
-  defp new_items(items, shelf_state) do
+  defp items_query(shelf_id) do
+    import Ecto.Query
+    from(i in Item, where: i.shelf_id == ^shelf_id)
+  end
+
+  defp new_items(items, shelf_id, shelf_state) do
     existing_ids =
       items
       |> Enum.map(& &1.id)
@@ -22,7 +28,9 @@ defmodule Avidade.Shelf do
 
     shelf_state
     |> Enum.filter(fn {id, _} -> !MapSet.member?(existing_ids, id) end)
-    |> Enum.map(fn {id, params} -> Item.changeset(%Item{id: id}, params) end)
+    |> Enum.map(fn {id, params} ->
+      Item.changeset(%Item{id: id, shelf_id: shelf_id}, params)
+    end)
   end
 
   defp items_to_delete(items, shelf_state) do

@@ -16,7 +16,7 @@ defmodule AvidadeWeb.Router do
   scope "/", AvidadeWeb do
     pipe_through(:api)
 
-    put("/shelf", ShelfController, :update)
+    put("/shelves/:id", ShelfController, :update)
   end
 
   # Other scopes may use custom stacks.

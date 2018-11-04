@@ -1,11 +1,21 @@
 alias Avidade.{
   Repo,
-  Shelf.Item
+  Shelf.Item,
+  Shelf.Shelf
 }
+
+Repo.insert!(%Shelf{
+  id: 1,
+  owner_name: "Bernardo Amorim",
+  owner_phone: "+5521999888777",
+  lat: 0.0,
+  long: 0.0
+})
 
 [
   %Item{
     id: "1",
+    shelf_id: 1,
     good_until: ~D[2018-11-11],
     description: "Feijão",
     image_url:
@@ -13,6 +23,7 @@ alias Avidade.{
   },
   %Item{
     id: "2",
+    shelf_id: 1,
     good_until: ~D[2018-11-11],
     missing_since: NaiveDateTime.utc_now(),
     description: "Leite",
@@ -20,6 +31,7 @@ alias Avidade.{
   },
   %Item{
     id: "3",
+    shelf_id: 1,
     image_url: "https://img.estadao.com.br/fotos/crop/960x540/resources/jpg/2/8/1453293531982.jpg"
   }
 ]

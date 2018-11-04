@@ -1,12 +1,17 @@
 defmodule AvidadeWeb.ShelfController do
   use AvidadeWeb, :controller
 
-  def update(conn, params) do
-    params
-    |> parse_params()
-    |> Avidade.Shelf.update_shelf()
+  def update(conn, %{"id" => raw_id}) do
+    case Integer.parse(raw_id) do
+      {id, ""} ->
+        parsed_params = parse_params(conn.body_params)
+        Avidade.Shelves.update_shelf(id, parsed_params)
 
-    json(conn, %{status: :ok})
+        json(conn, %{status: :ok})
+
+      _ ->
+        resp(conn, 400, "")
+    end
   end
 
   defp parse_params(params) do

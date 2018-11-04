@@ -6,8 +6,8 @@ defmodule Avidade.Repo.Migrations.CreateItemsTable do
       add(:id, :string, primary_key: true)
       add(:good_until, :date)
       add(:missing_since, :naive_datetime)
-      add(:description, :string)
-      add(:image_url, :string)
+      add(:description, :text)
+      add(:image_url, :text)
     end
   end
 end
